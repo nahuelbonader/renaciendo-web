@@ -3,6 +3,7 @@ import About from "@/components/About";
 import Products from "@/components/Products";
 import Team from "@/components/Team";
 import Subscribe from "@/components/Subscribe";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       <Products />
       <Team />
       <Subscribe />
+      <Footer />
     </main>
   );
 }
