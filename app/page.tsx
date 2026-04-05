@@ -16,13 +16,13 @@ export default function Home() {
       <About />
       <Quote
         text={landing.quotes[0]}
-        className="bg-gradient-to-r from-brand-primary to-brand-tertiary"
+        backgroundImage="https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=1920&q=80"
       />
       <Products />
       <Team />
       <Quote
         text={landing.quotes[1]}
-        className="bg-gradient-to-r from-brand-secondary to-brand-primary"
+        backgroundImage="https://images.unsplash.com/photo-1518173946687-a1e0e2a9e4b4?w=1920&q=80"
       />
       <Subscribe />
       <Footer />

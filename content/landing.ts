@@ -54,7 +54,7 @@ export const landing = {
   team: {
     title: "Quiénes somos",
     paragraphs: [
-      "Somos dos personas unidas por la convicción de que la naturaleza y la escritura tienen el poder de transformar. Creemos que reconectar con los procesos vitales nos hace más empáticos, más presentes y más humanos.",
+      "Somos personas unidas por la convicción de que la naturaleza y la escritura tienen el poder de transformar. Creemos que reconectar con los procesos vitales nos hace más empáticos, más presentes y más humanos.",
     ],
     authorHighlight: "Sol María Comas",
     authorDescription:
@@ -62,9 +62,9 @@ export const landing = {
     authorIntro: "Los escritos que dan vida a este proyecto son de",
   },
   subscribe: {
-    title: "Sé parte del renacer",
+    title: "Enterate de las novedades",
     subtitle:
-      "Enterate antes que nadie cuando abramos la tienda y recibí novedades del proyecto.",
+      "Dejanos tu email y te contamos cuando haya novedades.",
     namePlaceholder: "Tu nombre",
     emailPlaceholder: "Tu email",
     cta: "Quiero ser parte",
