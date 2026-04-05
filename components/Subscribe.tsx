@@ -3,6 +3,8 @@
 import { useState, FormEvent } from "react";
 import { landing } from "@/content/landing";
 import ScrollReveal from "@/components/ScrollReveal";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
 
 export default function Subscribe() {
   const { subscribe: content } = landing;
@@ -62,34 +64,36 @@ export default function Subscribe() {
             <label htmlFor="subscribe-name" className="sr-only">
               {content.namePlaceholder}
             </label>
-            <input
+            <Input
               id="subscribe-name"
               type="text"
               placeholder={content.namePlaceholder}
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="px-6 py-3 rounded-full border border-border-default focus:outline-none focus:border-brand-primary focus-visible:ring-2 focus-visible:ring-brand-primary text-center"
+              className="text-center"
             />
             <label htmlFor="subscribe-email" className="sr-only">
               {content.emailPlaceholder}
             </label>
-            <input
+            <Input
               id="subscribe-email"
               type="email"
               placeholder={content.emailPlaceholder}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="px-6 py-3 rounded-full border border-border-default focus:outline-none focus:border-brand-primary focus-visible:ring-2 focus-visible:ring-brand-primary text-center"
+              className="text-center"
             />
-            <button
+            <Button
               type="submit"
+              variant="secondary"
+              size="lg"
               disabled={status === "loading"}
-              className="px-8 py-3 bg-brand-primary text-text-inverse rounded-full hover:bg-brand-primary/80 transition-colors text-lg disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
+              className="disabled:opacity-50"
             >
               {status === "loading" ? content.loading : content.cta}
-            </button>
+            </Button>
             {status === "error" && (
               <p className="text-feedback-error text-sm">{message}</p>
             )}
