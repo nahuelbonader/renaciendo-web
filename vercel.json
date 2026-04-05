@@ -16,7 +16,40 @@
       "has": [
         {
           "type": "host",
+          "value": "www.renaciendoensolmayor.com"
+        }
+      ],
+      "destination": "https://renaciendoensolmayor.com.ar/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.renaciendoensolmayor.com.ar"
+        }
+      ],
+      "destination": "https://renaciendoensolmayor.com.ar/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
           "value": "renaciendo.com.ar"
+        }
+      ],
+      "destination": "https://renaciendoensolmayor.com.ar/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.renaciendo.com.ar"
         }
       ],
       "destination": "https://renaciendoensolmayor.com.ar/:path*",
@@ -38,7 +71,29 @@
       "has": [
         {
           "type": "host",
+          "value": "www.renaciendo.ar"
+        }
+      ],
+      "destination": "https://renaciendoensolmayor.com.ar/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
           "value": "renaciendoensolmayor.ar"
+        }
+      ],
+      "destination": "https://renaciendoensolmayor.com.ar/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.renaciendoensolmayor.ar"
         }
       ],
       "destination": "https://renaciendoensolmayor.com.ar/:path*",
