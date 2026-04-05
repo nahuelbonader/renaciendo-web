@@ -1,4 +1,6 @@
 import { landing } from "@/content/landing";
+import { buttonVariants } from "@/components/ui/Button";
+import { cn } from "@/lib/utils";
 
 export default function Footer() {
   const { footer } = landing;
@@ -13,7 +15,7 @@ export default function Footer() {
           href={footer.instagramUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="hover:text-brand-primary transition-colors"
+          className={cn(buttonVariants({ variant: "ghost" }), "text-text-inverse/70 hover:text-brand-primary")}
         >
           {footer.instagramHandle}
         </a>
