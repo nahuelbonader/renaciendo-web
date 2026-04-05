@@ -21,7 +21,7 @@ export default function Hero() {
       <p className="mt-6 text-lg md:text-xl text-text-inverse/80 max-w-xl">
         {hero.subtitle}
       </p>
-      <a href="#subscribe">
+      <a href="#subscribe" className="mt-10">
         <Button variant="primary" size="lg">
           {hero.cta}
         </Button>
