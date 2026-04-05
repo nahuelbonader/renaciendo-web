@@ -20,7 +20,7 @@ export default function Navbar() {
             <li key={link.href}>
               <a
                 href={link.href}
-                className="hover:text-brand-secondary transition-colors"
+                className="hover:text-text-inverse/60 transition-colors"
               >
                 {link.label}
               </a>
