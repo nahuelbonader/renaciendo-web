@@ -1,9 +1,6 @@
 ---
 name: design-system
-description: Enforces usage of the project's design system (components/ui/) when creating or modifying UI components. Auto-triggers on work involving components/ or globals.css.
-globs:
-  - "components/**/*.tsx"
-  - "app/globals.css"
+description: Enforces usage of the project's design system (components/ui/) when creating or modifying UI components. Use when building or editing components, buttons, inputs, cards, or styling.
 ---
 
 # Design System
