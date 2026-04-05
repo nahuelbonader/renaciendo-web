@@ -22,7 +22,7 @@ export default function Home() {
       <Team />
       <Quote
         text={landing.quotes[1]}
-        backgroundImage="https://images.unsplash.com/photo-1518173946687-a1e0e2a9e4b4?w=1920&q=80"
+        backgroundImage="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&q=80"
       />
       <Subscribe />
       <Footer />
