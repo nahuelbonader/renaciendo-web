@@ -69,7 +69,7 @@ export const landing = {
     emailPlaceholder: "Tu email",
     cta: "Quiero ser parte",
     loading: "Enviando...",
-    success: "Gracias por sumarte al renacer.",
+    success: "Gracias por sumarte a nuestra comunidad.",
     connectionError: "Error de conexión. Intentá de nuevo.",
     genericError: "Algo salió mal. Intentá de nuevo.",
     errors: {

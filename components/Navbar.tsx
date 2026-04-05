@@ -1,12 +1,11 @@
 import Image from "next/image";
-import Link from "next/link";
 import { landing } from "@/content/landing";
 
 export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-brand-primary backdrop-blur-sm">
       <div className="px-6 h-20 flex items-center justify-between">
-        <Link href="/">
+        <a href="#">
           <Image
             src="/images/logo-sun.png"
             alt={landing.nav.logoAlt}
@@ -14,7 +13,7 @@ export default function Navbar() {
             height={80}
             style={{ width: "auto", height: "auto" }}
           />
-        </Link>
+        </a>
         <ul className="hidden md:flex gap-10 text-base font-bold text-text-inverse">
           {landing.nav.links.map((link) => (
             <li key={link.href}>

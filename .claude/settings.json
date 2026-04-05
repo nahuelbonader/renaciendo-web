@@ -19,7 +19,16 @@
       "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\" -X POST http://localhost:3000/api/subscribe -H \"Content-Type: application/json\" -d '{\"\"\"\"name\"\"\"\":\"\"\"\"Test\"\"\"\",\"\"\"\"email\"\"\"\":\"\"\"\"test@example.com\"\"\"\"}')",
       "Bash(curl -s -w \"\\\\nHTTP %{http_code}\" -X POST http://localhost:3001/api/subscribe -H \"Content-Type: application/json\" -d '{\"\"name\"\":\"\"Test\"\",\"\"email\"\":\"\"test@example.com\"\"}')",
       "Bash(curl -s -w \"\\\\nHTTP %{http_code}\" -X POST http://localhost:3001/api/subscribe -H \"Content-Type: application/json\" -d '{\"\"name\"\":\"\"\"\",\"\"email\"\":\"\"bad\"\"}')",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "WebFetch(domain:www.instagram.com)",
+      "Read(//home/nahuel/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.7/skills/subagent-driven-development/**)",
+      "Bash(npm install:*)",
+      "Bash(git checkout:*)",
+      "Bash(git push:*)",
+      "Bash(git -C /home/nahuel/Software/renaciendoEnSolMayor/renaciendo-web status)"
+    ],
+    "additionalDirectories": [
+      "/home/nahuel/Software/renaciendoEnSolMayor/renaciendo-web/.claude/skills"
     ]
   }
 }
