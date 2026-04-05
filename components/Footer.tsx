@@ -21,7 +21,7 @@ export default function Footer() {
         </a>
       </div>
       <p className="text-sm">
-        &copy; {new Date().getFullYear()} {footer.copyright}
+        &copy; {footer.year} {footer.copyright}
       </p>
     </footer>
   );

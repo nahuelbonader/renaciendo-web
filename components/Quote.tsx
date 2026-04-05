@@ -1,4 +1,4 @@
-import ScrollReveal from "@/components/ScrollReveal";
+import ScrollReveal from "@/components/animations/ScrollReveal";
 
 interface QuoteProps {
   text: string;
@@ -21,7 +21,7 @@ export default function Quote({ text, backgroundImage, className = "" }: QuotePr
       }
     >
       {backgroundImage && (
-        <div className="absolute inset-0 bg-text-primary/50" aria-hidden="true" />
+        <div className="absolute inset-0 bg-text-primary/65" aria-hidden="true" />
       )}
       <ScrollReveal>
         <blockquote className="relative max-w-3xl mx-auto text-center">

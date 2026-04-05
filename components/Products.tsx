@@ -1,5 +1,5 @@
 import { landing } from "@/content/landing";
-import ScrollReveal from "@/components/ScrollReveal";
+import ScrollReveal from "@/components/animations/ScrollReveal";
 import { Card } from "@/components/ui";
 
 const accentStyles = [
@@ -24,12 +24,12 @@ export default function Products() {
         </ScrollReveal>
         <div className="grid md:grid-cols-3 gap-8">
           {products.items.map((product, index) => (
-            <ScrollReveal key={product.title} delay={index * 0.15}>
+            <ScrollReveal key={product.title} delay={index * 0.15} className="h-full">
               <Card
                 variant="accent"
                 size="auto"
                 hoverable
-                className={accentStyles[index % accentStyles.length]}
+                className={`h-full ${accentStyles[index % accentStyles.length]}`}
               >
                 <div className="text-5xl mb-6">{product.icon}</div>
                 <h3 className="text-xl text-text-primary mb-4">

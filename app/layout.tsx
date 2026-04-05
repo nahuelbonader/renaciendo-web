@@ -11,8 +11,29 @@ const gowunDodum = Gowun_Dodum({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://renaciendoensolmayor.com.ar"),
   title: landing.metadata.title,
   description: landing.metadata.description,
+  openGraph: {
+    title: landing.metadata.title,
+    description: landing.metadata.description,
+    url: "https://renaciendoensolmayor.com.ar",
+    siteName: landing.metadata.title,
+    images: [
+      {
+        url: "/images/logo-sun.png",
+        alt: landing.metadata.title,
+      },
+    ],
+    locale: "es_AR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: landing.metadata.title,
+    description: landing.metadata.description,
+    images: ["/images/logo-sun.png"],
+  },
 };
 
 export default function RootLayout({

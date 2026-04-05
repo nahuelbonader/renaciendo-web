@@ -1,5 +1,5 @@
 import { landing } from "@/content/landing";
-import ScrollReveal from "@/components/ScrollReveal";
+import ScrollReveal from "@/components/animations/ScrollReveal";
 
 export default function About() {
   const { about } = landing;

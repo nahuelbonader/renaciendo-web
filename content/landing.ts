@@ -88,6 +88,7 @@ export const landing = {
     quote: "La vida nos atraviesa para que podamos florecer.",
     instagramHandle: "@renaciendoensolmayor",
     instagramUrl: "https://www.instagram.com/renaciendoensolmayor/",
+    year: new Date().getFullYear(),
     copyright: "Renaciendo en Sol Mayor. Todos los derechos reservados.",
   },
 } as const;
