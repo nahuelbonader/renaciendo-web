@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Gowun_Dodum } from "next/font/google";
 import { landing } from "@/content/landing";
+import Navbar from "@/components/Navbar";
 import "./globals.css";
 
 const gowunDodum = Gowun_Dodum({
@@ -22,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="es" className={gowunDodum.variable}>
       <body className="font-gowun antialiased text-text-primary bg-surface-base">
+        <Navbar />
         {children}
       </body>
     </html>
