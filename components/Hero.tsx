@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { landing } from "@/content/landing";
+import Button from "@/components/ui/Button";
 
 export default function Hero() {
   const { hero } = landing;
@@ -20,11 +21,10 @@ export default function Hero() {
       <p className="mt-6 text-lg md:text-xl text-text-inverse/80 max-w-xl">
         {hero.subtitle}
       </p>
-      <a
-        href="#subscribe"
-        className="mt-10 px-8 py-3 bg-surface-base text-text-primary rounded-full hover:bg-surface-base/90 transition-colors text-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surface-base focus-visible:ring-offset-2"
-      >
-        {hero.cta}
+      <a href="#subscribe">
+        <Button variant="primary" size="lg">
+          {hero.cta}
+        </Button>
       </a>
     </section>
   );
