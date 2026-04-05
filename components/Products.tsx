@@ -1,5 +1,6 @@
 import { landing } from "@/content/landing";
 import ScrollReveal from "@/components/ScrollReveal";
+import { Card } from "@/components/ui";
 
 const accentStyles = [
   "bg-brand-secondary/20 border-brand-secondary/40 hover:shadow-brand-secondary/30",
@@ -24,8 +25,11 @@ export default function Products() {
         <div className="grid md:grid-cols-3 gap-8">
           {products.items.map((product, index) => (
             <ScrollReveal key={product.title} delay={index * 0.15}>
-              <div
-                className={`rounded-3xl border p-10 ${accentStyles[index % accentStyles.length]} transition-all duration-300 hover:scale-105 hover:shadow-lg`}
+              <Card
+                variant="accent"
+                size="auto"
+                hoverable
+                className={accentStyles[index % accentStyles.length]}
               >
                 <div className="text-5xl mb-6">{product.icon}</div>
                 <h3 className="text-xl text-text-primary mb-4">
@@ -34,7 +38,7 @@ export default function Products() {
                 <p className="text-text-secondary leading-relaxed">
                   {product.description}
                 </p>
-              </div>
+              </Card>
             </ScrollReveal>
           ))}
         </div>
