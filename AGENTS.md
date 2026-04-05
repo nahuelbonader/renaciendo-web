@@ -102,6 +102,12 @@ npm run build   # Production build (use to verify before deploy)
 npm run lint    # Run ESLint
 ```
 
+## Git Workflow
+
+- **Never push directly to `main`.** Main is protected and only updated via PRs or merges from `staging`.
+- **Always start work from `staging`** — feature branches branch off `staging`, commits go to `staging`.
+- **Flow:** `staging` -> PR to `main` (or merge when ready for production).
+
 ## Key Decisions
 
 - **Font:** Gowun Dodum (Google Fonts) — loaded in `layout.tsx`.
