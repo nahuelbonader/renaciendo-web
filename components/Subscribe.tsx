@@ -43,7 +43,7 @@ export default function Subscribe() {
   return (
     <section
       id="subscribe"
-      className="scroll-mt-16 py-24 px-4 bg-gradient-to-br from-brand-primary/20 to-brand-tertiary/20"
+      className="scroll-mt-20 py-24 px-4 bg-gradient-to-br from-brand-primary/20 to-brand-tertiary/20"
     >
       <div className="max-w-xl mx-auto text-center">
         <h2 className="text-3xl md:text-4xl text-text-primary mb-4">

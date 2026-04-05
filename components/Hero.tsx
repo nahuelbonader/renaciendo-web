@@ -5,7 +5,7 @@ export default function Hero() {
   const { hero } = landing;
 
   return (
-    <section className="min-h-screen pt-16 flex flex-col items-center justify-center text-center px-4 bg-gradient-to-br from-brand-secondary via-brand-primary to-brand-tertiary">
+    <section className="min-h-screen pt-20 flex flex-col items-center justify-center text-center px-4 bg-gradient-to-br from-brand-secondary via-brand-primary to-brand-tertiary">
       <Image
         src="/images/logo-text.png"
         alt={hero.logoAlt}
