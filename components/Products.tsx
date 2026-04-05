@@ -10,7 +10,7 @@ export default function Products() {
   const { products } = landing;
 
   return (
-    <section id="products" className="py-24 px-4 bg-surface-soft">
+    <section id="products" className="scroll-mt-16 py-24 px-4 bg-surface-soft">
       <div className="max-w-5xl mx-auto">
         <h2 className="text-3xl md:text-4xl text-text-primary text-center mb-4">
           {products.title}
@@ -22,7 +22,7 @@ export default function Products() {
           {products.items.map((product, index) => (
             <div
               key={product.title}
-              className={`rounded-2xl border p-8 ${accentStyles[index]} transition-transform hover:scale-105`}
+              className={`rounded-2xl border p-8 ${accentStyles[index % accentStyles.length]} transition-transform hover:scale-105`}
             >
               <h3 className="text-xl text-text-primary mb-4">
                 {product.title}

@@ -9,9 +9,10 @@ export default function Navbar() {
         <Link href="/">
           <Image
             src="/images/logo.png"
-            alt={landing.hero.logoAlt}
+            alt={landing.nav.logoAlt}
             width={48}
             height={48}
+            style={{ width: "auto", height: "auto" }}
           />
         </Link>
         <ul className="hidden md:flex gap-8 text-sm text-text-secondary">

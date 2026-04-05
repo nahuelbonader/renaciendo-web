@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
+import { landing } from "@/content/landing";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const subscribers = new Set<string>();
+
+const { errors, successMessage } = landing.subscribe;
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,14 +14,14 @@ export async function POST(request: NextRequest) {
 
     if (!name || typeof name !== "string" || name.trim().length === 0) {
       return NextResponse.json(
-        { error: "El nombre es requerido" },
+        { error: errors.nameRequired },
         { status: 400 }
       );
     }
 
     if (!email || typeof email !== "string" || !EMAIL_REGEX.test(email)) {
       return NextResponse.json(
-        { error: "El email no es válido" },
+        { error: errors.emailInvalid },
         { status: 400 }
       );
     }
@@ -27,7 +30,7 @@ export async function POST(request: NextRequest) {
 
     if (subscribers.has(normalizedEmail)) {
       return NextResponse.json(
-        { error: "Este email ya está registrado" },
+        { error: errors.emailDuplicate },
         { status: 409 }
       );
     }
@@ -37,12 +40,12 @@ export async function POST(request: NextRequest) {
     // TODO: Replace in-memory Set with Supabase persistence (second iteration)
 
     return NextResponse.json(
-      { message: "Suscripción exitosa" },
+      { message: successMessage },
       { status: 201 }
     );
   } catch {
     return NextResponse.json(
-      { error: "Error procesando la solicitud" },
+      { error: errors.serverError },
       { status: 500 }
     );
   }

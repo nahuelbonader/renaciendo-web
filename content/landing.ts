@@ -5,6 +5,7 @@ export const landing = {
       "Naturaleza y escritura. Reconectá con vos a través de la expresión escrita.",
   },
   nav: {
+    logoAlt: "Renaciendo en Sol Mayor",
     links: [
       { href: "#about", label: "Sobre nosotros" },
       { href: "#products", label: "Productos" },
@@ -68,6 +69,13 @@ export const landing = {
     success: "Gracias por sumarte al renacer.",
     connectionError: "Error de conexión. Intentá de nuevo.",
     genericError: "Algo salió mal. Intentá de nuevo.",
+    errors: {
+      nameRequired: "El nombre es requerido",
+      emailInvalid: "El email no es válido",
+      emailDuplicate: "Este email ya está registrado",
+      serverError: "Error procesando la solicitud",
+    },
+    successMessage: "Suscripción exitosa",
   },
   footer: {
     quote: "La vida nos atraviesa para que podamos florecer.",
