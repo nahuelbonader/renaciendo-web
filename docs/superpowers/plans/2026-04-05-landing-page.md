@@ -1,0 +1,1049 @@
+# Landing Page Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** Build the Renaciendo en Sol Mayor landing page — a single-page site that presents the brand, previews upcoming products, and captures subscriber emails.
+
+**Architecture:** Next.js 15 App Router with a single page (`app/page.tsx`) that composes 6 section components. All user-facing text lives in `content/landing.ts`, keeping components purely presentational. A server-side API route handles email subscription with validation (no database in this iteration). Tailwind CSS 4 with a semantic design system handles all styling.
+
+**Tech Stack:** Next.js 15, React 19, TypeScript, Tailwind CSS 4, Google Fonts (Gowun Dodum), Vercel
+
+**Conventions:**
+- All code, variable names, component names, and CSS tokens in **English**
+- All user-facing Spanish text extracted to `content/landing.ts`
+- All colors referenced via semantic design system tokens — never raw hex values in components
+
+---
+
+## Design System
+
+Semantic color tokens (never reference colors by their visual name in code):
+
+| Token | Hex | Usage |
+|-------|-----|-------|
+| `brand-primary` | `#E2A9F1` | CTAs, links, primary actions |
+| `brand-secondary` | `#FFDE59` | Warm accents, highlights |
+| `brand-tertiary` | `#6FE5CC` | Fresh complements, success |
+| `surface-base` | `#FFFFFF` | Default background |
+| `surface-soft` | `#FFF9F0` | Warm subtle background |
+| `surface-muted` | `#F5F0EB` | Alternating section backgrounds |
+| `text-primary` | `#2D2A26` | Main text |
+| `text-secondary` | `#6B6560` | Secondary text |
+| `text-inverse` | `#FFFFFF` | Text on dark backgrounds |
+| `border-default` | `#E5DED6` | Default borders |
+| `border-subtle` | `#F0EBE5` | Subtle borders |
+| `feedback-success` | `#6FE5CC` | Success states |
+| `feedback-error` | `#E5576F` | Error states |
+
+---
+
+## File Structure
+
+```
+renaciendo-web/
+├── app/
+│   ├── globals.css           # Tailwind directives + design system tokens
+│   ├── layout.tsx            # Root layout: fonts, metadata, Navbar
+│   ├── page.tsx              # Landing: composes all section components
+│   └── api/
+│       └── subscribe/
+│           └── route.ts      # POST /api/subscribe — validates name+email
+├── content/
+│   └── landing.ts            # All user-facing Spanish text
+├── components/
+│   ├── Navbar.tsx            # Fixed top nav with logo + section anchors
+│   ├── Hero.tsx              # Logo, tagline, gradient background
+│   ├── About.tsx             # Brand essence section
+│   ├── Products.tsx          # 3 product line previews
+│   ├── Team.tsx              # Quiénes somos
+│   ├── Subscribe.tsx         # Email capture form (client component)
+│   └── Footer.tsx            # Instagram link, credits, closing quote
+├── public/
+│   └── images/
+│       └── logo.png          # Transparent logo PNG
+├── .gitignore                # Node, Next.js, env files
+└── .env.local                # Future Supabase keys (not committed)
+```
+
+---
+
+### Task 1: Scaffold Next.js Project
+
+**Files:**
+- Create: `package.json`, `tsconfig.json`, `next.config.ts`, `app/layout.tsx`, `app/page.tsx`, `app/globals.css`, `.gitignore`, `public/images/` directory
+
+- [ ] **Step 1: Create Next.js app with Tailwind**
+
+```bash
+cd /tmp && npx create-next-app@latest renaciendo-temp \
+  --typescript --tailwind --eslint --app --src-dir=false \
+  --import-alias="@/*" --turbopack --no-git
+```
+
+- [ ] **Step 2: Move scaffolded files into existing repo**
+
+```bash
+cp -r /tmp/renaciendo-temp/* /home/nahuel/Software/renaciendoEnSolMayor/renaciendo-web/
+cp /tmp/renaciendo-temp/.gitignore /home/nahuel/Software/renaciendoEnSolMayor/renaciendo-web/
+cp /tmp/renaciendo-temp/.eslintrc.json /home/nahuel/Software/renaciendoEnSolMayor/renaciendo-web/ 2>/dev/null || true
+rm -rf /tmp/renaciendo-temp
+```
+
+- [ ] **Step 3: Add `.superpowers/` to `.gitignore`**
+
+Append to `.gitignore`:
+```
+# Superpowers brainstorm files
+.superpowers/
+```
+
+- [ ] **Step 4: Set up globals.css with design system**
+
+Replace `app/globals.css` with:
+
+```css
+@import "tailwindcss";
+
+@theme {
+  /* Brand */
+  --color-brand-primary: #E2A9F1;
+  --color-brand-secondary: #FFDE59;
+  --color-brand-tertiary: #6FE5CC;
+
+  /* Surfaces */
+  --color-surface-base: #FFFFFF;
+  --color-surface-soft: #FFF9F0;
+  --color-surface-muted: #F5F0EB;
+
+  /* Text */
+  --color-text-primary: #2D2A26;
+  --color-text-secondary: #6B6560;
+  --color-text-inverse: #FFFFFF;
+
+  /* Borders */
+  --color-border-default: #E5DED6;
+  --color-border-subtle: #F0EBE5;
+
+  /* Feedback */
+  --color-feedback-success: #6FE5CC;
+  --color-feedback-error: #E5576F;
+
+  /* Font */
+  --font-gowun: "Gowun Dodum", serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+```
+
+Note: Tailwind CSS 4 uses `@import "tailwindcss"` and `@theme` for custom values. The `tailwind.config.ts` file generated by create-next-app may not be needed — check installed version. If v3, use `tailwind.config.ts` with `theme.extend.colors` instead. Delete whichever config approach is not used.
+
+- [ ] **Step 5: Configure Google Font in layout**
+
+Edit `app/layout.tsx`:
+
+```tsx
+import type { Metadata } from "next";
+import { Gowun_Dodum } from "next/font/google";
+import "./globals.css";
+
+const gowunDodum = Gowun_Dodum({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-gowun",
+});
+
+export const metadata: Metadata = {
+  title: "Renaciendo en Sol Mayor",
+  description:
+    "Naturaleza y escritura. Reconectá con vos a través de la expresión escrita.",
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="es" className={gowunDodum.variable}>
+      <body className="font-gowun antialiased text-text-primary bg-surface-base">
+        {children}
+      </body>
+    </html>
+  );
+}
+```
+
+- [ ] **Step 6: Create minimal page.tsx placeholder**
+
+Edit `app/page.tsx`:
+
+```tsx
+export default function Home() {
+  return (
+    <main className="min-h-screen">
+      <h1 className="text-4xl text-center pt-20 text-brand-secondary">
+        Renaciendo en Sol Mayor
+      </h1>
+    </main>
+  );
+}
+```
+
+- [ ] **Step 7: Copy logo to public/images**
+
+Copy the transparent PNG logo file to `public/images/logo.png`. The user needs to provide this file from their assets.
+
+- [ ] **Step 8: Verify dev server starts**
+
+```bash
+cd /home/nahuel/Software/renaciendoEnSolMayor/renaciendo-web
+npm run dev
+```
+
+Open `http://localhost:3000` — should see "Renaciendo en Sol Mayor" in the brand-secondary (yellow) color with Gowun Dodum font.
+
+- [ ] **Step 9: Commit scaffold**
+
+```bash
+git add -A
+git commit -m "feat: scaffold Next.js 15 project with Tailwind and design system"
+```
+
+---
+
+### Task 2: Content File
+
+**Files:**
+- Create: `content/landing.ts`
+
+- [ ] **Step 1: Create content file with all landing page text**
+
+Create `content/landing.ts`:
+
+```ts
+export const landing = {
+  metadata: {
+    title: "Renaciendo en Sol Mayor",
+    description:
+      "Naturaleza y escritura. Reconectá con vos a través de la expresión escrita.",
+  },
+  nav: {
+    links: [
+      { href: "#about", label: "Sobre nosotros" },
+      { href: "#products", label: "Productos" },
+      { href: "#team", label: "Equipo" },
+      { href: "#subscribe", label: "Suscribite" },
+    ],
+  },
+  hero: {
+    tagline: "Dejarse atravesar por la vida",
+    subtitle:
+      "Naturaleza y escritura. Un espacio para reconectar con lo esencial.",
+    cta: "Quiero ser parte",
+    logoAlt: "Renaciendo en Sol Mayor",
+  },
+  about: {
+    title: "Qué es Renaciendo en Sol Mayor",
+    paragraphs: [
+      "Renaciendo en Sol Mayor nace de la fusión de dos grandes amores: la naturaleza y la escritura. Es una invitación a despertar la sensibilidad, a reavivar el amor por la vida y a reconectar con aquello que nos hace profundamente humanos.",
+      "A través de la expresión escrita, buscamos que cada persona vuelva a percibirse parte de la naturaleza, recuperando esos procesos vitales que nos atraviesan y nos transforman.",
+    ],
+  },
+  products: {
+    title: "Qué estamos creando",
+    subtitle: "Muy pronto disponibles para vos",
+    items: [
+      {
+        title: "Cuadernos Premium",
+        description:
+          "Diseñados para que la experiencia de escribir sea única y de conexión. Papel de alta calidad, tapas ilustradas y detalles que invitan a plasmar tu mundo interior.",
+      },
+      {
+        title: "Bitácoras de Escritura Reflexiva",
+        description:
+          "Guías temáticas basadas en los procesos de la naturaleza. Cada bitácora te acompaña a reconectar con los ciclos vitales y a explorar tu propia transformación a través de la escritura.",
+      },
+      {
+        title: "Arte y Decoración",
+        description:
+          "Cuadros con ilustraciones y frases originales, stickers y objetos que llevan la esencia de Renaciendo en Sol Mayor a tus espacios cotidianos.",
+      },
+    ],
+  },
+  team: {
+    title: "Quiénes somos",
+    paragraphs: [
+      "Somos dos personas unidas por la convicción de que la naturaleza y la escritura tienen el poder de transformar. Creemos que reconectar con los procesos vitales nos hace más empáticos, más presentes y más humanos.",
+    ],
+    authorHighlight: "Sol María Comas",
+    authorDescription:
+      "quien firma como Renaciendo en Sol Mayor — un nombre que es a la vez una declaración y una invitación.",
+    authorIntro: "Los escritos que dan vida a este proyecto son de",
+  },
+  subscribe: {
+    title: "Sé parte del renacer",
+    subtitle:
+      "Enterate antes que nadie cuando abramos la tienda y recibí novedades del proyecto.",
+    namePlaceholder: "Tu nombre",
+    emailPlaceholder: "Tu email",
+    cta: "Quiero ser parte",
+    loading: "Enviando...",
+    success: "Gracias por sumarte al renacer.",
+    connectionError: "Error de conexión. Intentá de nuevo.",
+    genericError: "Algo salió mal. Intentá de nuevo.",
+  },
+  footer: {
+    quote: "La vida nos atraviesa para que podamos florecer.",
+    instagramHandle: "@renaciendoensolmayor",
+    instagramUrl: "https://www.instagram.com/renaciendoensolmayor/",
+    copyright: "Renaciendo en Sol Mayor. Todos los derechos reservados.",
+  },
+} as const;
+```
+
+- [ ] **Step 2: Update layout.tsx to use content for metadata**
+
+```tsx
+import type { Metadata } from "next";
+import { Gowun_Dodum } from "next/font/google";
+import { landing } from "@/content/landing";
+import "./globals.css";
+
+const gowunDodum = Gowun_Dodum({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-gowun",
+});
+
+export const metadata: Metadata = {
+  title: landing.metadata.title,
+  description: landing.metadata.description,
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="es" className={gowunDodum.variable}>
+      <body className="font-gowun antialiased text-text-primary bg-surface-base">
+        {children}
+      </body>
+    </html>
+  );
+}
+```
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add content/landing.ts app/layout.tsx
+git commit -m "feat: add centralized content file for all landing page text"
+```
+
+---
+
+### Task 3: Navbar Component
+
+**Files:**
+- Create: `components/Navbar.tsx`
+- Modify: `app/layout.tsx`
+
+- [ ] **Step 1: Create Navbar component**
+
+Create `components/Navbar.tsx`:
+
+```tsx
+import Image from "next/image";
+import Link from "next/link";
+import { landing } from "@/content/landing";
+
+export default function Navbar() {
+  return (
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-surface-base/80 backdrop-blur-sm border-b border-border-subtle">
+      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+        <Link href="/">
+          <Image
+            src="/images/logo.png"
+            alt={landing.hero.logoAlt}
+            width={48}
+            height={48}
+          />
+        </Link>
+        <ul className="hidden md:flex gap-8 text-sm text-text-secondary">
+          {landing.nav.links.map((link) => (
+            <li key={link.href}>
+              <a
+                href={link.href}
+                className="hover:text-brand-primary transition-colors"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
+  );
+}
+```
+
+- [ ] **Step 2: Add Navbar to layout**
+
+Edit `app/layout.tsx` — add `import Navbar from "@/components/Navbar";` and render `<Navbar />` before `{children}` inside `<body>`:
+
+```tsx
+import type { Metadata } from "next";
+import { Gowun_Dodum } from "next/font/google";
+import { landing } from "@/content/landing";
+import Navbar from "@/components/Navbar";
+import "./globals.css";
+
+const gowunDodum = Gowun_Dodum({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-gowun",
+});
+
+export const metadata: Metadata = {
+  title: landing.metadata.title,
+  description: landing.metadata.description,
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="es" className={gowunDodum.variable}>
+      <body className="font-gowun antialiased text-text-primary bg-surface-base">
+        <Navbar />
+        {children}
+      </body>
+    </html>
+  );
+}
+```
+
+- [ ] **Step 3: Verify Navbar renders**
+
+Run dev server, check that the navbar is fixed at top with logo and links visible on desktop.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add components/Navbar.tsx app/layout.tsx
+git commit -m "feat: add fixed Navbar with brand logo and section anchors"
+```
+
+---
+
+### Task 4: Hero Section
+
+**Files:**
+- Create: `components/Hero.tsx`
+- Modify: `app/page.tsx`
+
+- [ ] **Step 1: Create Hero component**
+
+Create `components/Hero.tsx`:
+
+```tsx
+import Image from "next/image";
+import { landing } from "@/content/landing";
+
+export default function Hero() {
+  const { hero } = landing;
+
+  return (
+    <section className="min-h-screen flex flex-col items-center justify-center text-center px-4 bg-gradient-to-br from-brand-secondary/30 via-brand-primary/20 to-brand-tertiary/30">
+      <Image
+        src="/images/logo.png"
+        alt={hero.logoAlt}
+        width={200}
+        height={200}
+        priority
+      />
+      <h1 className="mt-8 text-4xl md:text-6xl text-text-primary max-w-2xl leading-tight">
+        {hero.tagline}
+      </h1>
+      <p className="mt-6 text-lg md:text-xl text-text-secondary max-w-xl">
+        {hero.subtitle}
+      </p>
+      <a
+        href="#subscribe"
+        className="mt-10 px-8 py-3 bg-brand-primary text-text-inverse rounded-full hover:bg-brand-primary/80 transition-colors text-lg"
+      >
+        {hero.cta}
+      </a>
+    </section>
+  );
+}
+```
+
+- [ ] **Step 2: Update page.tsx to use Hero**
+
+Replace `app/page.tsx`:
+
+```tsx
+import Hero from "@/components/Hero";
+
+export default function Home() {
+  return (
+    <main>
+      <Hero />
+    </main>
+  );
+}
+```
+
+- [ ] **Step 3: Verify Hero renders**
+
+Check gradient background, centered logo, tagline text in Gowun Dodum, and CTA button visible.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add components/Hero.tsx app/page.tsx
+git commit -m "feat: add Hero section with logo, tagline and CTA"
+```
+
+---
+
+### Task 5: About Section
+
+**Files:**
+- Create: `components/About.tsx`
+- Modify: `app/page.tsx`
+
+- [ ] **Step 1: Create About component**
+
+Create `components/About.tsx`:
+
+```tsx
+import { landing } from "@/content/landing";
+
+export default function About() {
+  const { about } = landing;
+
+  return (
+    <section id="about" className="py-24 px-4 bg-surface-base">
+      <div className="max-w-3xl mx-auto text-center">
+        <h2 className="text-3xl md:text-4xl text-text-primary mb-8">
+          {about.title}
+        </h2>
+        {about.paragraphs.map((paragraph, index) => (
+          <p
+            key={index}
+            className="text-lg text-text-secondary leading-relaxed mb-6 last:mb-0"
+          >
+            {paragraph}
+          </p>
+        ))}
+      </div>
+    </section>
+  );
+}
+```
+
+- [ ] **Step 2: Add About to page.tsx**
+
+```tsx
+import Hero from "@/components/Hero";
+import About from "@/components/About";
+
+export default function Home() {
+  return (
+    <main>
+      <Hero />
+      <About />
+    </main>
+  );
+}
+```
+
+- [ ] **Step 3: Verify and commit**
+
+```bash
+git add components/About.tsx app/page.tsx
+git commit -m "feat: add About section with brand story"
+```
+
+---
+
+### Task 6: Products Section
+
+**Files:**
+- Create: `components/Products.tsx`
+- Modify: `app/page.tsx`
+
+- [ ] **Step 1: Create Products component**
+
+Create `components/Products.tsx`:
+
+```tsx
+import { landing } from "@/content/landing";
+
+const accentStyles = [
+  "bg-brand-secondary/20 border-brand-secondary/40",
+  "bg-brand-primary/20 border-brand-primary/40",
+  "bg-brand-tertiary/20 border-brand-tertiary/40",
+];
+
+export default function Products() {
+  const { products } = landing;
+
+  return (
+    <section id="products" className="py-24 px-4 bg-surface-soft">
+      <div className="max-w-5xl mx-auto">
+        <h2 className="text-3xl md:text-4xl text-text-primary text-center mb-4">
+          {products.title}
+        </h2>
+        <p className="text-center text-text-secondary mb-16 text-lg">
+          {products.subtitle}
+        </p>
+        <div className="grid md:grid-cols-3 gap-8">
+          {products.items.map((product, index) => (
+            <div
+              key={product.title}
+              className={`rounded-2xl border p-8 ${accentStyles[index]} transition-transform hover:scale-105`}
+            >
+              <h3 className="text-xl text-text-primary mb-4">
+                {product.title}
+              </h3>
+              <p className="text-text-secondary leading-relaxed">
+                {product.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+```
+
+- [ ] **Step 2: Add Products to page.tsx**
+
+```tsx
+import Hero from "@/components/Hero";
+import About from "@/components/About";
+import Products from "@/components/Products";
+
+export default function Home() {
+  return (
+    <main>
+      <Hero />
+      <About />
+      <Products />
+    </main>
+  );
+}
+```
+
+- [ ] **Step 3: Verify and commit**
+
+```bash
+git add components/Products.tsx app/page.tsx
+git commit -m "feat: add Products section with three product previews"
+```
+
+---
+
+### Task 7: Team Section
+
+**Files:**
+- Create: `components/Team.tsx`
+- Modify: `app/page.tsx`
+
+- [ ] **Step 1: Create Team component**
+
+Create `components/Team.tsx`:
+
+```tsx
+import { landing } from "@/content/landing";
+
+export default function Team() {
+  const { team } = landing;
+
+  return (
+    <section id="team" className="py-24 px-4 bg-surface-base">
+      <div className="max-w-3xl mx-auto text-center">
+        <h2 className="text-3xl md:text-4xl text-text-primary mb-8">
+          {team.title}
+        </h2>
+        {team.paragraphs.map((paragraph, index) => (
+          <p
+            key={index}
+            className="text-lg text-text-secondary leading-relaxed mb-6"
+          >
+            {paragraph}
+          </p>
+        ))}
+        <p className="text-lg text-text-secondary leading-relaxed">
+          {team.authorIntro}{" "}
+          <span className="text-brand-primary font-bold">
+            {team.authorHighlight}
+          </span>
+          , {team.authorDescription}
+        </p>
+      </div>
+    </section>
+  );
+}
+```
+
+- [ ] **Step 2: Add Team to page.tsx**
+
+```tsx
+import Hero from "@/components/Hero";
+import About from "@/components/About";
+import Products from "@/components/Products";
+import Team from "@/components/Team";
+
+export default function Home() {
+  return (
+    <main>
+      <Hero />
+      <About />
+      <Products />
+      <Team />
+    </main>
+  );
+}
+```
+
+- [ ] **Step 3: Verify and commit**
+
+```bash
+git add components/Team.tsx app/page.tsx
+git commit -m "feat: add Team section introducing the founders"
+```
+
+---
+
+### Task 8: Subscribe Section + API Route
+
+**Files:**
+- Create: `components/Subscribe.tsx`, `app/api/subscribe/route.ts`
+- Modify: `app/page.tsx`
+
+- [ ] **Step 1: Create the API route**
+
+Create `app/api/subscribe/route.ts`:
+
+```ts
+import { NextRequest, NextResponse } from "next/server";
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const subscribers = new Set<string>();
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { name, email } = body;
+
+    if (!name || typeof name !== "string" || name.trim().length === 0) {
+      return NextResponse.json(
+        { error: "El nombre es requerido" },
+        { status: 400 }
+      );
+    }
+
+    if (!email || typeof email !== "string" || !EMAIL_REGEX.test(email)) {
+      return NextResponse.json(
+        { error: "El email no es válido" },
+        { status: 400 }
+      );
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+
+    if (subscribers.has(normalizedEmail)) {
+      return NextResponse.json(
+        { error: "Este email ya está registrado" },
+        { status: 409 }
+      );
+    }
+
+    subscribers.add(normalizedEmail);
+
+    // TODO: Replace in-memory Set with Supabase persistence (second iteration)
+
+    return NextResponse.json(
+      { message: "Suscripción exitosa" },
+      { status: 201 }
+    );
+  } catch {
+    return NextResponse.json(
+      { error: "Error procesando la solicitud" },
+      { status: 500 }
+    );
+  }
+}
+```
+
+- [ ] **Step 2: Test the API route manually**
+
+```bash
+# Start dev server, then in another terminal:
+curl -X POST http://localhost:3000/api/subscribe \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Test","email":"test@example.com"}'
+# Expected: {"message":"Suscripción exitosa"} with 201
+
+curl -X POST http://localhost:3000/api/subscribe \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Test","email":"test@example.com"}'
+# Expected: {"error":"Este email ya está registrado"} with 409
+
+curl -X POST http://localhost:3000/api/subscribe \
+  -H "Content-Type: application/json" \
+  -d '{"name":"","email":"bad"}'
+# Expected: {"error":"El nombre es requerido"} with 400
+```
+
+- [ ] **Step 3: Create Subscribe component**
+
+Create `components/Subscribe.tsx`:
+
+```tsx
+"use client";
+
+import { useState, FormEvent } from "react";
+import { landing } from "@/content/landing";
+
+export default function Subscribe() {
+  const { subscribe: content } = landing;
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
+  const [message, setMessage] = useState("");
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    setStatus("loading");
+
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name.trim(), email: email.trim() }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setStatus("success");
+        setMessage(content.success);
+        setName("");
+        setEmail("");
+      } else {
+        setStatus("error");
+        setMessage(data.error || content.genericError);
+      }
+    } catch {
+      setStatus("error");
+      setMessage(content.connectionError);
+    }
+  }
+
+  return (
+    <section
+      id="subscribe"
+      className="py-24 px-4 bg-gradient-to-br from-brand-primary/20 to-brand-tertiary/20"
+    >
+      <div className="max-w-xl mx-auto text-center">
+        <h2 className="text-3xl md:text-4xl text-text-primary mb-4">
+          {content.title}
+        </h2>
+        <p className="text-lg text-text-secondary mb-10">{content.subtitle}</p>
+
+        {status === "success" ? (
+          <p className="text-lg text-feedback-success bg-feedback-success/10 rounded-2xl py-6 px-4">
+            {message}
+          </p>
+        ) : (
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <input
+              type="text"
+              placeholder={content.namePlaceholder}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              className="px-6 py-3 rounded-full border border-border-default focus:outline-none focus:border-brand-primary text-center"
+            />
+            <input
+              type="email"
+              placeholder={content.emailPlaceholder}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="px-6 py-3 rounded-full border border-border-default focus:outline-none focus:border-brand-primary text-center"
+            />
+            <button
+              type="submit"
+              disabled={status === "loading"}
+              className="px-8 py-3 bg-brand-primary text-text-inverse rounded-full hover:bg-brand-primary/80 transition-colors text-lg disabled:opacity-50"
+            >
+              {status === "loading" ? content.loading : content.cta}
+            </button>
+            {status === "error" && (
+              <p className="text-feedback-error text-sm">{message}</p>
+            )}
+          </form>
+        )}
+      </div>
+    </section>
+  );
+}
+```
+
+- [ ] **Step 4: Add Subscribe to page.tsx**
+
+```tsx
+import Hero from "@/components/Hero";
+import About from "@/components/About";
+import Products from "@/components/Products";
+import Team from "@/components/Team";
+import Subscribe from "@/components/Subscribe";
+
+export default function Home() {
+  return (
+    <main>
+      <Hero />
+      <About />
+      <Products />
+      <Team />
+      <Subscribe />
+    </main>
+  );
+}
+```
+
+- [ ] **Step 5: Verify form submission works end-to-end**
+
+Fill the form, submit, verify success message. Try duplicate email, verify 409 error message. Try empty name, verify validation.
+
+- [ ] **Step 6: Commit**
+
+```bash
+git add app/api/subscribe/route.ts components/Subscribe.tsx app/page.tsx
+git commit -m "feat: add Subscribe section with email capture form and API route"
+```
+
+---
+
+### Task 9: Footer
+
+**Files:**
+- Create: `components/Footer.tsx`
+- Modify: `app/page.tsx`
+
+- [ ] **Step 1: Create Footer component**
+
+Create `components/Footer.tsx`:
+
+```tsx
+import { landing } from "@/content/landing";
+
+export default function Footer() {
+  const { footer } = landing;
+
+  return (
+    <footer className="py-12 px-4 bg-text-primary text-text-inverse/70 text-center">
+      <p className="text-lg text-text-inverse/90 italic mb-6">
+        &ldquo;{footer.quote}&rdquo;
+      </p>
+      <div className="mb-6">
+        <a
+          href={footer.instagramUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:text-brand-primary transition-colors"
+        >
+          {footer.instagramHandle}
+        </a>
+      </div>
+      <p className="text-sm">
+        &copy; {new Date().getFullYear()} {footer.copyright}
+      </p>
+    </footer>
+  );
+}
+```
+
+- [ ] **Step 2: Add Footer to page.tsx**
+
+```tsx
+import Hero from "@/components/Hero";
+import About from "@/components/About";
+import Products from "@/components/Products";
+import Team from "@/components/Team";
+import Subscribe from "@/components/Subscribe";
+import Footer from "@/components/Footer";
+
+export default function Home() {
+  return (
+    <main>
+      <Hero />
+      <About />
+      <Products />
+      <Team />
+      <Subscribe />
+      <Footer />
+    </main>
+  );
+}
+```
+
+- [ ] **Step 3: Verify and commit**
+
+```bash
+git add components/Footer.tsx app/page.tsx
+git commit -m "feat: add Footer with Instagram link and closing quote"
+```
+
+---
+
+### Task 10: Final Polish and Verification
+
+**Files:**
+- Modify: Various — visual tweaks only
+
+- [ ] **Step 1: Run production build**
+
+```bash
+npm run build
+```
+
+Expected: Build succeeds with no errors.
+
+- [ ] **Step 2: Test production server**
+
+```bash
+npm run start
+```
+
+Open `http://localhost:3000`. Verify:
+- Navbar is fixed, links scroll to sections
+- Hero gradient and logo render correctly
+- All sections display with correct content from `content/landing.ts`
+- Subscribe form works (submit, duplicate check, validation)
+- Footer Instagram link opens in new tab
+- Mobile responsive (resize browser to check)
+- No raw hex colors in any component — all use design system tokens
+
+- [ ] **Step 3: Commit any final adjustments**
+
+```bash
+git add -A
+git commit -m "chore: final polish and build verification"
+```
