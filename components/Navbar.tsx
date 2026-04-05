@@ -8,10 +8,10 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/">
           <Image
-            src="/images/logo.png"
+            src="/images/logo-sun.png"
             alt={landing.nav.logoAlt}
-            width={48}
-            height={48}
+            width={56}
+            height={56}
             style={{ width: "auto", height: "auto" }}
           />
         </Link>
