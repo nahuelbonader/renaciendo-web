@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Gowun_Dodum } from "next/font/google";
+import { landing } from "@/content/landing";
 import "./globals.css";
 
 const gowunDodum = Gowun_Dodum({
@@ -9,9 +10,8 @@ const gowunDodum = Gowun_Dodum({
 });
 
 export const metadata: Metadata = {
-  title: "Renaciendo en Sol Mayor",
-  description:
-    "Naturaleza y escritura. Reconectá con vos a través de la expresión escrita.",
+  title: landing.metadata.title,
+  description: landing.metadata.description,
 };
 
 export default function RootLayout({
