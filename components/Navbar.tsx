@@ -15,7 +15,7 @@ export default function Navbar() {
             style={{ width: "auto", height: "auto" }}
           />
         </Link>
-        <ul className="hidden md:flex gap-8 text-sm text-text-inverse/80">
+        <ul className="hidden md:flex gap-8 text-text-inverse/80">
           {landing.nav.links.map((link) => (
             <li key={link.href}>
               <a

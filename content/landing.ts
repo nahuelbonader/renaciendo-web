@@ -32,16 +32,19 @@ export const landing = {
     subtitle: "Muy pronto disponibles para vos",
     items: [
       {
+        icon: "\ud83d\udcd3",
         title: "Cuadernos Premium",
         description:
           "Diseñados para que la experiencia de escribir sea única y de conexión. Papel de alta calidad, tapas ilustradas y detalles que invitan a plasmar tu mundo interior.",
       },
       {
+        icon: "\ud83c\udf3f",
         title: "Bitácoras de Escritura Reflexiva",
         description:
           "Guías temáticas basadas en los procesos de la naturaleza. Cada bitácora te acompaña a reconectar con los ciclos vitales y a explorar tu propia transformación a través de la escritura.",
       },
       {
+        icon: "\ud83d\uddbc\ufe0f",
         title: "Arte y Decoración",
         description:
           "Cuadros con ilustraciones y frases originales, stickers y objetos que llevan la esencia de Renaciendo en Sol Mayor a tus espacios cotidianos.",
@@ -77,6 +80,10 @@ export const landing = {
     },
     successMessage: "Suscripción exitosa",
   },
+  quotes: [
+    "Escribir es volver a casa",
+    "La naturaleza no tiene prisa, y sin embargo todo lo logra",
+  ],
   footer: {
     quote: "La vida nos atraviesa para que podamos florecer.",
     instagramHandle: "@renaciendoensolmayor",

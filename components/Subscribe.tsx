@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from "react";
 import { landing } from "@/content/landing";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export default function Subscribe() {
   const { subscribe: content } = landing;
@@ -43,8 +44,9 @@ export default function Subscribe() {
   return (
     <section
       id="subscribe"
-      className="scroll-mt-20 py-24 px-4 bg-gradient-to-br from-brand-primary/20 to-brand-tertiary/20"
+      className="scroll-mt-20 py-24 px-4 bg-brand-primary/10"
     >
+      <ScrollReveal>
       <div className="max-w-xl mx-auto text-center">
         <h2 className="text-3xl md:text-4xl text-text-primary mb-4">
           {content.title}
@@ -94,6 +96,7 @@ export default function Subscribe() {
           </form>
         )}
       </div>
+      </ScrollReveal>
     </section>
   );
 }
