@@ -2,7 +2,7 @@
 
 import { useState, FormEvent } from "react";
 import { landing } from "@/content/landing";
-import ScrollReveal from "@/components/ScrollReveal";
+import ScrollReveal from "@/components/animations/ScrollReveal";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 

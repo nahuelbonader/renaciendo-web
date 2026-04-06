@@ -1,5 +1,5 @@
 import Hero from "@/components/Hero";
-import WaveDivider from "@/components/WaveDivider";
+
 import About from "@/components/About";
 import Quote from "@/components/Quote";
 import Products from "@/components/Products";
@@ -12,7 +12,6 @@ export default function Home() {
   return (
     <main>
       <Hero />
-      <WaveDivider colorVar="--color-surface-base" />
       <About />
       <Quote
         text={landing.quotes[0]}
