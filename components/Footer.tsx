@@ -1,6 +1,5 @@
 import { landing } from "@/content/landing";
-import { buttonVariants } from "@/components/ui/Button";
-import { cn } from "@/lib/utils";
+import Button from "@/components/ui/Button";
 
 export default function Footer() {
   const { footer } = landing;
@@ -11,14 +10,11 @@ export default function Footer() {
         &ldquo;{footer.quote}&rdquo;
       </p>
       <div className="mb-6">
-        <a
-          href={footer.instagramUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={cn(buttonVariants({ variant: "ghost" }), "text-text-inverse/70 hover:text-brand-primary")}
-        >
-          {footer.instagramHandle}
-        </a>
+        <Button variant="ghost" asChild className="text-text-inverse/70 hover:text-brand-primary">
+          <a href={footer.instagramUrl} target="_blank" rel="noopener noreferrer">
+            {footer.instagramHandle}
+          </a>
+        </Button>
       </div>
       <p className="text-sm">
         &copy; {footer.year} {footer.copyright}

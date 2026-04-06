@@ -14,14 +14,16 @@ export default function Home() {
       <Hero />
       <About />
       <Quote
-        text={landing.quotes[0]}
+        text={landing.quotes[0].text}
         backgroundImage="https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=1920&q=80"
+        imageAlt={landing.quotes[0].imageAlt}
       />
       <Products />
       <Team />
       <Quote
-        text={landing.quotes[1]}
+        text={landing.quotes[1].text}
         backgroundImage="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&q=80"
+        imageAlt={landing.quotes[1].imageAlt}
       />
       <Subscribe />
       <Footer />

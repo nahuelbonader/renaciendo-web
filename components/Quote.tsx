@@ -3,13 +3,16 @@ import ScrollReveal from "@/components/animations/ScrollReveal";
 interface QuoteProps {
   text: string;
   backgroundImage?: string;
+  imageAlt?: string;
   className?: string;
 }
 
-export default function Quote({ text, backgroundImage, className = "" }: QuoteProps) {
+export default function Quote({ text, backgroundImage, imageAlt, className = "" }: QuoteProps) {
   return (
     <div
       className={`relative py-20 md:py-32 px-4 overflow-hidden ${className}`}
+      role={backgroundImage ? "img" : undefined}
+      aria-label={backgroundImage ? imageAlt : undefined}
       style={
         backgroundImage
           ? {

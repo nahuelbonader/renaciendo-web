@@ -25,7 +25,9 @@
       "Bash(npm install:*)",
       "Bash(git checkout:*)",
       "Bash(git push:*)",
-      "Bash(git -C /home/nahuel/Software/renaciendoEnSolMayor/renaciendo-web status)"
+      "Bash(git -C /home/nahuel/Software/renaciendoEnSolMayor/renaciendo-web status)",
+      "Bash(gh api:*)",
+      "Bash(node -e ':*)"
     ],
     "additionalDirectories": [
       "/home/nahuel/Software/renaciendoEnSolMayor/renaciendo-web/.claude/skills"
