@@ -1,8 +1,20 @@
 export const landing = {
   metadata: {
-    title: "Renaciendo en Sol Mayor",
+    title:
+      "Renaciendo en Sol Mayor — Cuadernos y escritura reflexiva inspirados en la naturaleza",
+    shortTitle: "Renaciendo en Sol Mayor",
     description:
-      "Naturaleza y escritura. Reconectá con vos a través de la expresión escrita.",
+      "Cuadernos premium, bitácoras de escritura reflexiva y arte inspirado en la naturaleza. Reconectá con vos a través de la expresión escrita.",
+    keywords: [
+      "cuadernos artesanales",
+      "escritura reflexiva",
+      "naturaleza y escritura",
+      "bitácoras de escritura",
+      "cuadernos premium Argentina",
+      "journaling naturaleza",
+      "Renaciendo en Sol Mayor",
+      "Sol María Comas",
+    ] as string[],
   },
   nav: {
     logoAlt: "Renaciendo en Sol Mayor",
@@ -81,8 +93,14 @@ export const landing = {
     successMessage: "Suscripción exitosa",
   },
   quotes: [
-    "Escribir es volver a casa",
-    "La naturaleza no tiene prisa, y sin embargo todo lo logra",
+    {
+      text: "Escribir es volver a casa",
+      imageAlt: "Árbol frondoso iluminado por el sol en un bosque verde",
+    },
+    {
+      text: "La naturaleza no tiene prisa, y sin embargo todo lo logra",
+      imageAlt: "Sendero en un bosque denso con luz natural filtrándose entre los árboles",
+    },
   ],
   footer: {
     quote: "La vida nos atraviesa para que podamos florecer.",
