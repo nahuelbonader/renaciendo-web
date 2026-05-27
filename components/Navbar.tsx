@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { landing } from "@/content/landing";
+import Button from "@/components/ui/Button";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,19 +21,30 @@ export default function Navbar() {
           />
         </a>
 
-        {/* Desktop links */}
-        <ul className="hidden md:flex gap-10 text-base font-bold text-text-inverse">
-          {landing.nav.links.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className="hover:text-text-inverse/60 transition-colors"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
+        {/* Desktop links + store CTA */}
+        <div className="hidden md:flex items-center gap-10">
+          <ul className="flex gap-10 text-base font-bold text-text-inverse">
+            {landing.nav.links.map((link) => (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  className="hover:text-text-inverse/60 transition-colors"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <Button asChild variant="primary" size="sm">
+            <a
+              href={landing.nav.store.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {landing.nav.store.label}
+            </a>
+          </Button>
+        </div>
 
         {/* Mobile hamburger button */}
         <button
@@ -62,22 +74,34 @@ export default function Navbar() {
       {/* Mobile menu */}
       <div
         className={`md:hidden overflow-hidden transition-all duration-300 bg-brand-primary ${
-          isOpen ? "max-h-64" : "max-h-0"
+          isOpen ? "max-h-96" : "max-h-0"
         }`}
       >
-        <ul className="flex flex-col items-center gap-6 py-6 text-base font-bold text-text-inverse">
-          {landing.nav.links.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className="hover:text-text-inverse/60 transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
+        <div className="flex flex-col items-center gap-6 py-6 text-base font-bold text-text-inverse">
+          <ul className="flex flex-col items-center gap-6">
+            {landing.nav.links.map((link) => (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  className="hover:text-text-inverse/60 transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <Button asChild variant="primary" size="md">
+            <a
+              href={landing.nav.store.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsOpen(false)}
+            >
+              {landing.nav.store.label}
+            </a>
+          </Button>
+        </div>
       </div>
     </nav>
   );
