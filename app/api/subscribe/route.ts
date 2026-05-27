@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { landing } from "@/content/landing";
+import { SUPABASE_REST_URL, SUPABASE_SECRET_KEY } from "@/lib/supabase";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const subscribers = new Set<string>();
-
-const { errors, successMessage } = landing.subscribe;
+const { errors, success, alreadySubscribed } = landing.subscribe;
 
 export async function POST(request: NextRequest) {
   try {
@@ -26,24 +25,44 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const normalizedEmail = email.toLowerCase().trim();
+    const response = await fetch(`${SUPABASE_REST_URL}/subscribers`, {
+      method: "POST",
+      headers: {
+        apikey: SUPABASE_SECRET_KEY,
+        "Content-Type": "application/json",
+        Prefer: "return=minimal",
+      },
+      body: JSON.stringify({
+        email: email.toLowerCase().trim(),
+        name: name.trim(),
+      }),
+    });
 
-    if (subscribers.has(normalizedEmail)) {
+    if (response.status === 409) {
       return NextResponse.json(
-        { error: errors.emailDuplicate },
+        { message: alreadySubscribed },
         { status: 409 }
       );
     }
 
-    subscribers.add(normalizedEmail);
-
-    // TODO: Replace in-memory Set with Supabase persistence (second iteration)
+    if (!response.ok) {
+      const errorBody = await response.text();
+      console.error("[subscribe] Supabase responded with error", {
+        status: response.status,
+        body: errorBody,
+      });
+      return NextResponse.json(
+        { error: errors.serverError },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json(
-      { message: successMessage },
+      { message: success },
       { status: 201 }
     );
-  } catch {
+  } catch (err) {
+    console.error("[subscribe] Unhandled error", err);
     return NextResponse.json(
       { error: errors.serverError },
       { status: 500 }

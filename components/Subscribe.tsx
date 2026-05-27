@@ -28,9 +28,9 @@ export default function Subscribe() {
 
       const data = await res.json();
 
-      if (res.ok) {
+      if (res.ok || res.status === 409) {
         setStatus("success");
-        setMessage(content.success);
+        setMessage(data.message || content.success);
         setName("");
         setEmail("");
       } else {
@@ -56,7 +56,7 @@ export default function Subscribe() {
         <p className="text-lg text-text-secondary mb-10">{content.subtitle}</p>
 
         {status === "success" ? (
-          <p className="text-lg text-feedback-success bg-feedback-success/10 rounded-2xl py-6 px-4">
+          <p className="text-xl font-medium text-text-primary bg-feedback-success/30 border border-feedback-success rounded-2xl py-6 px-4">
             {message}
           </p>
         ) : (

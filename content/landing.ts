@@ -24,6 +24,10 @@ export const landing = {
       { href: "#team", label: "Equipo" },
       { href: "#subscribe", label: "Suscribite" },
     ],
+    store: {
+      label: "Tienda",
+      href: "https://renaciendoensolmayor.com/",
+    },
   },
   hero: {
     tagline: "Dejarse atravesar por la vida",
@@ -81,16 +85,15 @@ export const landing = {
     emailPlaceholder: "Tu email",
     cta: "Quiero ser parte",
     loading: "Enviando...",
-    success: "Gracias por sumarte a nuestra comunidad.",
+    success: "¡Gracias por sumarte! Te vamos a escribir cuando haya novedades. 🌱",
+    alreadySubscribed: "Ya sos parte de la comunidad. ¡Gracias por estar! 💛",
     connectionError: "Error de conexión. Intentá de nuevo.",
     genericError: "Algo salió mal. Intentá de nuevo.",
     errors: {
       nameRequired: "El nombre es requerido",
       emailInvalid: "El email no es válido",
-      emailDuplicate: "Este email ya está registrado",
       serverError: "Error procesando la solicitud",
     },
-    successMessage: "Suscripción exitosa",
   },
   quotes: [
     {
